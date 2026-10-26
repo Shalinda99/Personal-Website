@@ -1,12 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, ArrowDown } from 'lucide-react';
-import ParticleBackground from '../components/ParticleBackground';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { Github, Linkedin, Mail, ArrowRight, Download } from 'lucide-react';
+import VideoBackground from '../components/VideoBackground';
+import { VIDEOS } from '../config/videos';
 
-const ROLES = ["Web Developer", "UI/UX Designer", "Full-Stack Developer", "AI Enthusiast", "Creative Problem Solver"];
+const ROLES = ["Software Engineer", "Web Developer", "Full-Stack Developer", "AI Enthusiast", "Creative Problem Solver"];
+const CV_URL = "https://drive.google.com/file/d/172Ey3LyrI3tO7w5ERPv1V0TQGX1xj5mS/view?usp=sharing";
+
+const SOCIALS = [
+    { label: 'GitHub', href: 'https://github.com/Shalinda99', icon: Github, external: true },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/amal-shalinda-188885231/', icon: Linkedin, external: true },
+    { label: 'Email', href: '#contact', icon: Mail },
+];
+
+const EASE = [0.22, 1, 0.36, 1];
+
+const fadeUp = (delay) => ({
+    initial: { opacity: 0, y: 24 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.8, delay, ease: EASE },
+});
+
+const reveal = (delay) => ({
+    initial: { y: '110%' },
+    animate: { y: 0 },
+    transition: { duration: 1, delay, ease: EASE },
+});
 
 const Hero = () => {
     const [roleIndex, setRoleIndex] = useState(0);
+    const sectionRef = useRef(null);
+
+    const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
+    const contentY = useTransform(scrollYProgress, [0, 1], [0, 120]);
+    const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+    const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -16,81 +44,112 @@ const Hero = () => {
     }, []);
 
     return (
-        <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-50 dark:bg-gray-950 pt-20">
+        <section
+            id="home"
+            ref={sectionRef}
+            className="dark relative min-h-screen flex items-center overflow-hidden bg-gray-950 text-white"
+        >
+            <motion.div style={{ scale: videoScale }} className="absolute inset-0">
+                <VideoBackground src={VIDEOS.hero} poster="/videos/hero-poster.jpg" treatment="none" eager />
+            </motion.div>
+            <div aria-hidden className="absolute inset-0 bg-gray-950/75 md:bg-transparent md:bg-gradient-to-r md:from-gray-950 md:via-gray-950/80 md:to-gray-950/20" />
+            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-gray-950 via-transparent to-gray-950/70" />
 
-            <ParticleBackground />
-
-            <div className="container mx-auto px-6 relative z-10 text-center">
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="text-lg md:text-xl font-medium text-primary mb-4"
-                >
-                    Hi, I am
-                </motion.p>
-
-                <motion.h1
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
-                    className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-6"
-                >
-                    Amal <span className="text-gradient">Shalinda</span>
-                </motion.h1>
-
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                    className="h-12 mb-6"
-                >
-                    <h3 className="text-2xl md:text-3xl text-gray-700 dark:text-gray-300 font-medium flex items-center justify-center gap-2">
-                        I love to work as a
-                        <span className="font-bold text-gray-900 dark:text-white inline-block min-w-[280px] text-left">
-                            {ROLES[roleIndex]}
-                            <span className="animate-pulse ml-1">|</span>
+            <motion.div
+                style={{ y: contentY, opacity: contentOpacity }}
+                className="container relative z-10 mx-auto px-6 md:px-12 pt-32 pb-28"
+            >
+                <div className="max-w-3xl">
+                    <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.05] mb-6">
+                        <span className="block overflow-hidden pb-2">
+                            <motion.span className="block" {...reveal(0.1)}>Amal</motion.span>
                         </span>
-                    </h3>
-                </motion.div>
+                        <span className="block overflow-hidden pb-2">
+                            <motion.span className="block text-primary" {...reveal(0.22)}>Shalinda</motion.span>
+                        </span>
+                    </h1>
 
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                    className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10"
-                >
-                    Believe in your abilities, and the world will open up to you...
-                </motion.p>
+                    <motion.div
+                        {...fadeUp(0.45)}
+                        className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xl md:text-2xl text-gray-300 font-light mb-6"
+                    >
+                        <span className="w-10 h-px bg-primary" />
+                        <span>I work as a</span>
+                        <span className="relative inline-flex items-center overflow-hidden h-[1.5em] font-semibold text-white">
+                            <AnimatePresence mode="wait">
+                                <motion.span
+                                    key={ROLES[roleIndex]}
+                                    initial={{ y: '100%', opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    exit={{ y: '-100%', opacity: 0 }}
+                                    transition={{ duration: 0.45, ease: EASE }}
+                                    className="inline-block"
+                                >
+                                    {ROLES[roleIndex]}
+                                </motion.span>
+                            </AnimatePresence>
+                        </span>
+                    </motion.div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                    className="flex justify-center items-center space-x-6 mb-16"
-                >
-                    <a href="https://github.com/Shalinda99" target="_blank" rel="noreferrer" className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all text-gray-700 dark:text-gray-300 hover:text-primary">
-                        <Github size={24} />
-                    </a>
-                    <a href="https://www.linkedin.com/in/amal-shalinda-188885231/" target="_blank" rel="noreferrer" className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all text-gray-700 dark:text-gray-300 hover:text-primary">
-                        <Linkedin size={24} />
-                    </a>
-                    <a href="#contact" className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all text-gray-700 dark:text-gray-300 hover:text-primary">
-                        <Mail size={24} />
-                    </a>
-                </motion.div>
+                    <motion.p
+                        {...fadeUp(0.55)}
+                        className="text-base md:text-lg text-gray-400 max-w-xl leading-relaxed mb-10"
+                    >
+                        I build secure, scalable software across the full stack, from frontend and backend to Kubernetes deployments and AI-powered features for healthcare.
+                    </motion.p>
 
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1, duration: 1 }}
-                    className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce"
-                >
-                    <a href="#about" className="text-gray-400 hover:text-primary transition-colors">
-                        <ArrowDown size={32} />
-                    </a>
-                </motion.div>
-            </div>
+                    <motion.div {...fadeUp(0.65)} className="flex flex-wrap items-center gap-4">
+                        <a
+                            href="#portfolio"
+                            className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-white font-semibold shadow-lg shadow-primary/30 hover:bg-primary/90 hover:shadow-primary/50 transition-all"
+                        >
+                            View My Work
+                            <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+                        </a>
+                        <a
+                            href={CV_URL}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-white/20 bg-white/5 backdrop-blur-md text-white font-semibold hover:bg-white/10 hover:border-white/40 transition-all"
+                        >
+                            <Download size={18} />
+                            Download CV
+                        </a>
+                        <div className="flex items-center gap-1 sm:ml-2">
+                            {SOCIALS.map(({ label, href, icon: Icon, external }) => (
+                                <a
+                                    key={label}
+                                    href={href}
+                                    aria-label={label}
+                                    {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}
+                                    className="p-3 rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                                >
+                                    <Icon size={20} />
+                                </a>
+                            ))}
+                        </div>
+                    </motion.div>
+
+                </div>
+            </motion.div>
+
+            <motion.a
+                href="#about"
+                aria-label="Scroll to About"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.4, duration: 0.8 }}
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2 text-gray-500 hover:text-white transition-colors"
+            >
+                <span className="w-6 h-10 rounded-full border-2 border-current flex justify-center pt-2">
+                    <motion.span
+                        animate={{ y: [0, 12, 0], opacity: [1, 0.2, 1] }}
+                        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                        className="w-1 h-2 rounded-full bg-current"
+                    />
+                </span>
+                <span className="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
+            </motion.a>
         </section>
     );
 };

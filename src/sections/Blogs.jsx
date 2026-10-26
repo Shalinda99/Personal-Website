@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import SectionHeader from '../components/SectionHeader';
 import { ArrowRight } from 'lucide-react';
+import VideoBackground from '../components/VideoBackground';
+import { VIDEOS } from '../config/videos';
 
 const blogsData = [
     {
@@ -38,8 +40,9 @@ const blogsData = [
 
 const Blogs = () => {
     return (
-        <section id="blogs" className="py-24 bg-gray-50 dark:bg-gray-950 transition-colors">
-            <div className="container mx-auto px-6 md:px-12">
+        <section id="blogs" className="relative overflow-hidden py-16 md:py-24 bg-gray-50 dark:bg-gray-950 transition-colors">
+            <VideoBackground src={VIDEOS.blogs} />
+            <div className="container mx-auto px-6 md:px-12 relative z-10">
                 <SectionHeader title="Blogs" subtitle="Learn and Explore with My Blogs." />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -53,7 +56,7 @@ const Blogs = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-50px" }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="group block bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all border border-gray-100 dark:border-gray-800"
+                            className="group block bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:shadow-primary/20 hover:border-primary/40 transition-all border border-gray-100 dark:border-gray-800"
                         >
                             <div className="relative h-48 overflow-hidden">
                                 <img

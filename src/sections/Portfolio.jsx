@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SectionHeader from '../components/SectionHeader';
 import { Github, ExternalLink, X, Play } from 'lucide-react';
+import VideoBackground from '../components/VideoBackground';
+import { VIDEOS } from '../config/videos';
 
-const CATEGORIES = ["All", "Web Development", "UI UX Designs", "3D Modeling & Animation", "Other"];
+const CATEGORIES = ["All", "AI & Agents", "Web Development", "UI UX Designs", "3D Modeling & Animation", "Other"];
 
 const projectsData = [
     { id: 1, title: 'FoodBank', category: 'Web Development', src: '/uploads/gallery_img-01.png', type: 'image', link: 'https://github.com/Shalinda99/FoodBank', fallbackImg: '' },
@@ -26,6 +28,11 @@ const projectsData = [
     { id: 18, title: 'Animation 3', category: '3D Modeling & Animation', src: '/uploads/v2.mp4', type: 'video', link: '/uploads/v2.mp4' },
     { id: 19, title: 'Waikkala', category: 'Web Development', src: '/uploads/waikkala.mp4', type: 'video', link: 'https://github.com/Waikkala/wgm-frontend' },
     { id: 20, title: 'YouTube Demo', category: 'Other', type: 'youtube', videoId: 'TEhs5ZkCKZU', link: 'https://www.youtube.com/watch?v=TEhs5ZkCKZU' },
+    { id: 21, title: 'Tender', category: 'AI & Agents', src: '/uploads/tender.svg', type: 'image', link: 'https://tender-web-686i.onrender.com' },
+    { id: 22, title: 'MemoryWeave', category: 'AI & Agents', src: '/uploads/memoryweave.svg', type: 'image', link: '/uploads/memoryweave.svg' },
+    { id: 23, title: 'AI Chatbot for Existing Products', category: 'AI & Agents', src: '/uploads/ai-chatbot.svg', type: 'image', link: '/uploads/ai-chatbot.svg' },
+    { id: 24, title: 'AI Incident Reporter for SaaS', category: 'AI & Agents', src: '/uploads/incident-reporter.svg', type: 'image', link: '/uploads/incident-reporter.svg' },
+    { id: 25, title: 'Realtime AI Voice Assistant', category: 'AI & Agents', src: '/uploads/voice-assistant.svg', type: 'image', link: '/uploads/voice-assistant.svg' },
 ];
 
 const Portfolio = () => {
@@ -35,17 +42,18 @@ const Portfolio = () => {
     const filteredProjects = projectsData.filter(project => filter === 'All' || project.category === filter);
 
     return (
-        <section id="portfolio" className="py-24 bg-white dark:bg-gray-900 transition-colors">
-            <div className="container mx-auto px-6 md:px-12">
+        <section id="portfolio" className="relative overflow-hidden py-16 md:py-24 bg-white dark:bg-gray-900 transition-colors">
+            <VideoBackground src={VIDEOS.portfolio} />
+            <div className="container mx-auto px-6 md:px-12 relative z-10">
                 <SectionHeader title="Portfolio" subtitle="See how I use creativity and technology to make great results..." />
 
                 {/* Filter Buttons */}
-                <div className="flex flex-wrap justify-center gap-4 mb-12">
+                <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-8 sm:mb-12">
                     {CATEGORIES.map(category => (
                         <button
                             key={category}
                             onClick={() => setFilter(category)}
-                            className={`px-6 py-2 rounded-full font-medium transition-all ${filter === category ? 'bg-primary text-white shadow-lg shadow-primary/30' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+                            className={`px-4 sm:px-6 py-2 rounded-full text-sm sm:text-base font-medium transition-all ${filter === category ? 'bg-primary text-white shadow-lg shadow-primary/30' : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
                         >
                             {category}
                         </button>
@@ -53,7 +61,7 @@ const Portfolio = () => {
                 </div>
 
                 {/* Grid */}
-                <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <motion.div layout className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8">
                     <AnimatePresence>
                         {filteredProjects.map((project) => (
                             <motion.div
@@ -63,31 +71,31 @@ const Portfolio = () => {
                                 exit={{ opacity: 0, scale: 0.9 }}
                                 transition={{ duration: 0.3 }}
                                 key={project.id}
-                                className="group relative rounded-2xl overflow-hidden glass-panel aspect-[4/3] cursor-pointer"
+                                className="group relative rounded-xl sm:rounded-2xl overflow-hidden glass-panel aspect-[4/3] cursor-pointer"
                                 onClick={() => setSelectedProject(project)}
                             >
                                 {project.type === 'video' ? (
                                     <div className="w-full h-full relative">
-                                        <video className="w-full h-full object-cover" src={project.src} muted loop />
+                                        <video className="w-full h-full object-cover" src={project.src} muted loop playsInline preload="metadata" />
                                         <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
-                                            <Play className="text-white w-12 h-12 opacity-80" />
+                                            <Play className="text-white w-8 h-8 sm:w-12 sm:h-12 opacity-80" />
                                         </div>
                                     </div>
                                 ) : project.type === 'youtube' ? (
                                     <div className="w-full h-full relative">
                                         <img src={`https://img.youtube.com/vi/${project.videoId}/maxresdefault.jpg`} onError={(e) => e.target.src = `https://img.youtube.com/vi/${project.videoId}/hqdefault.jpg`} alt={project.title} className="w-full h-full object-cover" loading="lazy" />
                                         <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
-                                            <Play className="text-white w-12 h-12 opacity-80" />
+                                            <Play className="text-white w-8 h-8 sm:w-12 sm:h-12 opacity-80" />
                                         </div>
                                     </div>
                                 ) : (
-                                    <img src={project.src} alt={project.title} className="w-full h-full object-cover" loading="lazy" />
+                                    <img src={project.src} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
                                 )}
 
                                 {/* Hover Overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6 translate-y-4 group-hover:translate-y-0">
-                                    <h4 className="text-xl font-bold text-white mb-2">{project.title}</h4>
-                                    <p className="text-primary font-medium text-sm mb-4">{project.category}</p>
+                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/30 to-transparent [@media(hover:hover)]:via-gray-900/50 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 flex flex-col justify-end p-3 sm:p-6">
+                                    <h4 className="text-sm sm:text-xl font-bold text-white sm:mb-2 line-clamp-2">{project.title}</h4>
+                                    <p className="hidden sm:block text-primary font-medium text-sm mb-4">{project.category}</p>
                                 </div>
                             </motion.div>
                         ))}
@@ -109,11 +117,12 @@ const Portfolio = () => {
                                 animate={{ scale: 1, opacity: 1 }}
                                 exit={{ scale: 0.9, opacity: 0 }}
                                 onClick={(e) => e.stopPropagation()}
-                                className="relative bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-2xl max-w-4xl w-full border border-gray-200 dark:border-gray-800"
+                                className="relative bg-white dark:bg-gray-900 rounded-2xl overflow-hidden overflow-y-auto max-h-[90vh] shadow-2xl max-w-4xl w-full border border-gray-200 dark:border-gray-800"
                             >
                                 <button
                                     onClick={() => setSelectedProject(null)}
-                                    className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-colors"
+                                    aria-label="Close"
+                                    className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-colors"
                                 >
                                     <X size={24} />
                                 </button>
@@ -134,21 +143,23 @@ const Portfolio = () => {
                                     )}
                                 </div>
 
-                                <div className="p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                                <div className="p-5 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                                     <div>
-                                        <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{selectedProject.title}</h3>
+                                        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">{selectedProject.title}</h3>
                                         <p className="text-primary font-medium">{selectedProject.category}</p>
                                     </div>
 
-                                    <a
-                                        href={selectedProject.link}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium flex items-center gap-2 hover:shadow-lg hover:shadow-primary/30 transition-all hover:-translate-y-1"
-                                    >
-                                        {selectedProject.link.includes('github') ? <Github size={20} /> : <ExternalLink size={20} />}
-                                        View Project
-                                    </a>
+                                    {selectedProject.link?.startsWith('http') && (
+                                        <a
+                                            href={selectedProject.link}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium flex items-center gap-2 hover:shadow-lg hover:shadow-primary/30 transition-all hover:-translate-y-1"
+                                        >
+                                            {selectedProject.link.includes('github') ? <Github size={20} /> : <ExternalLink size={20} />}
+                                            View Project
+                                        </a>
+                                    )}
                                 </div>
                             </motion.div>
                         </motion.div>

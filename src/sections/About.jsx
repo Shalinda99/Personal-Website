@@ -2,11 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import SectionHeader from '../components/SectionHeader';
 import { Download } from 'lucide-react';
+import VideoBackground from '../components/VideoBackground';
+import { VIDEOS } from '../config/videos';
 
 const About = () => {
     return (
-        <section id="about" className="py-24 bg-white dark:bg-gray-900 transition-colors">
-            <div className="container mx-auto px-6 md:px-12">
+        <section id="about" className="relative overflow-hidden py-16 md:py-24 bg-white dark:bg-gray-900 transition-colors">
+            <VideoBackground src={VIDEOS.about} />
+            <div className="container mx-auto px-6 md:px-12 relative z-10">
                 <SectionHeader title="About Me" subtitle="A brief introduction about who I am and what I do." />
 
                 <div className="flex flex-col md:flex-row items-center gap-16">
@@ -45,7 +48,7 @@ const About = () => {
                             In my free time, I like to travel, play cricket, and watch movies. These activities help me relax and stay inspired. I am excited to keep learning and use my skills to make a positive impact in the IT world.
                         </p>
 
-                        <div className="pt-4">
+                        <div className="pt-4 flex flex-wrap gap-4">
                             <a
                                 href="https://drive.google.com/file/d/172Ey3LyrI3tO7w5ERPv1V0TQGX1xj5mS/view?usp=sharing"
                                 target="_blank"
