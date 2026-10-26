@@ -47,7 +47,7 @@ const About = () => {
 
                         <div className="pt-4">
                             <a
-                                href="https://drive.google.com/file/d/1Biq1556yGGmV5kCEWqryuKLo7FTBreJj/view?usp=sharing"
+                                href="https://drive.google.com/file/d/172Ey3LyrI3tO7w5ERPv1V0TQGX1xj5mS/view?usp=sharing"
                                 target="_blank"
                                 rel="noreferrer"
                                 className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-full hover:shadow-lg hover:shadow-primary/30 transition-all hover:-translate-y-1"
