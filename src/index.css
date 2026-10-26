@@ -1,32 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display:wght@500;600;700;800&family=Mrs+Saint+Delafield&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: #f8fafc;
-    --text: #0f172a;
-    --primary: #3b82f6;
-    --secondary: #8b5cf6;
-    --accent: #10b981;
-    --card-bg: rgba(255, 255, 255, 0.7);
+    --background-rgb: 255 255 255;
+    --text-rgb: 15 10 11;
+    --primary-rgb: 220 20 40;
+    --secondary-rgb: 139 13 26;
+    --accent-rgb: 255 77 90;
+    --background: rgb(var(--background-rgb));
+    --text: rgb(var(--text-rgb));
+    --primary: rgb(var(--primary-rgb));
+    --secondary: rgb(var(--secondary-rgb));
+    --accent: rgb(var(--accent-rgb));
+    --card-bg: rgba(255, 255, 255, 0.75);
     --nav-bg: rgba(255, 255, 255, 0.8);
   }
 
   .dark {
-    --background: #020617;
-    --text: #f8fafc;
-    --primary: #60a5fa;
-    --secondary: #a78bfa;
-    --accent: #34d399;
-    --card-bg: rgba(15, 23, 42, 0.7);
-    --nav-bg: rgba(2, 6, 23, 0.8);
+    --background-rgb: 8 7 7;
+    --text-rgb: 250 250 250;
+    --primary-rgb: 255 36 56;
+    --secondary-rgb: 179 0 27;
+    --accent-rgb: 255 236 238;
+    --card-bg: rgba(20, 12, 13, 0.6);
+    --nav-bg: rgba(8, 7, 7, 0.75);
   }
 }
 
 @layer utilities {
   .glass-panel {
-    @apply bg-[var(--card-bg)] backdrop-blur-lg border border-white/20 dark:border-white/10 shadow-xl;
+    @apply bg-[var(--card-bg)] backdrop-blur-lg border border-gray-200/60 dark:border-white/10 shadow-xl transition-[border-color,box-shadow] duration-300 hover:border-primary/40 hover:shadow-primary/10;
+  }
+
+  .glow-red {
+    box-shadow: 0 0 0 1px rgb(var(--primary-rgb) / 0.35), 0 10px 40px -10px rgb(var(--primary-rgb) / 0.6);
+  }
+
+  .nav-link {
+    @apply relative after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 hover:after:scale-x-100;
   }
   
   .glass-nav {
@@ -34,7 +49,7 @@
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent bg-[length:200%_100%] animate-shine;
   }
   
   .bg-gradient-flow {
@@ -54,6 +69,30 @@ html {
 
 body {
   font-family: 'Inter', sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
+.dark input:-webkit-autofill,
+.dark textarea:-webkit-autofill {
+  -webkit-text-fill-color: #fff;
+  -webkit-box-shadow: 0 0 0 1000px #1a1516 inset;
+  caret-color: #fff;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+::selection {
+  background: var(--primary);
+  color: #fff;
 }
 
 /* Custom Scrollbar */

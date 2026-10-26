@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import SectionHeader from '../components/SectionHeader';
 import { GraduationCap, Landmark } from 'lucide-react';
+import VideoBackground from '../components/VideoBackground';
+import { VIDEOS } from '../config/videos';
 
 const eduData = [
     {
@@ -15,15 +17,16 @@ const eduData = [
         institution: 'Richmond College, Galle',
         period: 'Jun 2016 - Aug 2019',
         degree: 'G.C.E Advanced Level Examination',
-        details: 'Physical Science stream. Grades: A B B.',
+        details: 'Physical Science stream. Combined Mathematics - A, Physics - B, Chemistry - B.',
         icon: <Landmark size={28} />
     }
 ];
 
 const Education = () => {
     return (
-        <section id="education" className="py-24 bg-gray-50 dark:bg-gray-950 transition-colors">
-            <div className="container mx-auto px-6 md:px-12">
+        <section id="education" className="relative overflow-hidden py-16 md:py-24 bg-gray-50 dark:bg-gray-950 transition-colors">
+            <VideoBackground src={VIDEOS.education} />
+            <div className="container mx-auto px-6 md:px-12 relative z-10">
                 <SectionHeader title="Education" subtitle="My academic journey and achievements." />
 
                 <div className="flex flex-col lg:flex-row gap-12 items-center lg:items-start max-w-6xl mx-auto">
